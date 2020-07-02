@@ -1,7 +1,9 @@
+type Method = "get" | "delete" | "head" | "options" | "post" | "put" | "patch";
+
 interface RequestConfig {
   url: string;
   baseURL?: string;
-  method?: string;
+  method?: Method;
   transformRequest?: (data: any, headers: any) => {};
   transformResponse?: Array<(data: any) => {}>;
   headers?: { [key: string]: any };
@@ -40,7 +42,7 @@ interface RequestConfig {
   decompress?: boolean;
 }
 
-type OptionalUrlRequestConfig = Omit<RequestConfig, "url">;
+type AliasMethodRequestConfig = Omit<RequestConfig, "url">;
 
 interface AxiosResponse {
   data: { [key: string]: any };
@@ -53,16 +55,25 @@ interface AxiosResponse {
 
 declare function axios(config: RequestConfig): Promise<AxiosResponse>;
 
+type AliasMethod = (
+  url: string,
+  config?: AliasMethodRequestConfig
+) => Promise<AxiosResponse>;
+
+type AliasMethodWithData = (
+  url: string,
+  data?: { [key: string]: any } | string,
+  config?: AliasMethodRequestConfig
+) => Promise<AxiosResponse>;
+
 declare namespace axios {
   var request: (config: RequestConfig) => Promise<AxiosResponse>;
-  var get: (
-    url: string,
-    config?: OptionalUrlRequestConfig
-  ) => Promise<AxiosResponse>;
-  var head: (
-    url: string,
-    config?: OptionalUrlRequestConfig
-  ) => Promise<AxiosResponse>;
+  var get: AliasMethod;
+  var head: AliasMethod;
+  var options: AliasMethod;
+  var post: AliasMethodWithData;
+  var put: AliasMethodWithData;
+  var patch: AliasMethodWithData;
 }
 
 export default axios;
