@@ -1,7 +1,13 @@
 import axios from "axios";
 
-(async () => {
-    const {config, data, headers, request, status, statusText} = await axios({url: "/haha"});
-    
-})()
+const url = "/blah";
 
+(async () => {
+  const { config, data, headers, request, status, statusText } = await axios({
+    url,
+  });
+
+  await axios.request({ url });
+
+  await axios.get(url, { params: { id: 1 } });
+})();
