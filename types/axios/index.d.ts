@@ -44,6 +44,8 @@ interface RequestConfig {
 
 type AliasMethodRequestConfig = Omit<RequestConfig, "url">;
 
+type RequiredRequestConfig = Required<RequestConfig>;
+
 interface AxiosResponse {
   data: { [key: string]: any };
   status: number;
@@ -74,6 +76,7 @@ declare namespace axios {
   var post: AliasMethodWithData;
   var put: AliasMethodWithData;
   var patch: AliasMethodWithData;
+  var defaults: RequiredRequestConfig;
 }
 
 export default axios;
