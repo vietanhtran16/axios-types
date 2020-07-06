@@ -1,15 +1,21 @@
 type Method = "get" | "delete" | "head" | "options" | "post" | "put" | "patch";
 
+type ResponseType = "arraybuffer" | "document" | "json" | "text" | "stream";
+
+interface Object {
+  [key: string]: any;
+}
+
 interface RequestConfig {
   url: string;
   baseURL?: string;
   method?: Method;
-  transformRequest?: (data: any, headers: any) => {};
-  transformResponse?: Array<(data: any) => {}>;
-  headers?: { [key: string]: any };
-  params?: { [key: string]: any };
-  paramsSerializer?: (params: any) => string;
-  data?: { [key: string]: any } | string;
+  transformRequest?: (data: Object, headers: Object) => Object;
+  transformResponse?: Array<(data: Object) => Object>;
+  headers?: Object;
+  params?: Object;
+  paramsSerializer?: (params: Object) => string;
+  data?: Object | string;
   timeout?: number;
   withCredentials?: boolean;
   adapter?: (config: any) => Promise<{}>;
@@ -17,7 +23,7 @@ interface RequestConfig {
     username: string;
     password: string;
   };
-  responseType?: string;
+  responseType?: ResponseType;
   responseEncoding?: string;
   xsrfCookieName?: string;
   xsrfHeaderName?: string;
@@ -47,36 +53,37 @@ type AliasMethodRequestConfig = Omit<RequestConfig, "url">;
 type RequiredRequestConfig = Required<RequestConfig>;
 
 interface AxiosResponse {
-  data: { [key: string]: any };
+  data: Object;
   status: number;
   statusText: string;
-  headers: { [key: string]: any };
-  config: { [key: string]: any };
+  headers: Object;
+  config: Object;
   request: any;
 }
 
-declare function axios(config: RequestConfig): Promise<AxiosResponse>;
-
-type AliasMethod = (
+type AliasFunc = (
   url: string,
   config?: AliasMethodRequestConfig
 ) => Promise<AxiosResponse>;
 
-type AliasMethodWithData = (
+type AliasFuncWithData = (
   url: string,
-  data?: { [key: string]: any } | string,
+  data?: Object | string,
   config?: AliasMethodRequestConfig
 ) => Promise<AxiosResponse>;
 
-declare namespace axios {
-  var request: (config: RequestConfig) => Promise<AxiosResponse>;
-  var get: AliasMethod;
-  var head: AliasMethod;
-  var options: AliasMethod;
-  var post: AliasMethodWithData;
-  var put: AliasMethodWithData;
-  var patch: AliasMethodWithData;
-  var defaults: RequiredRequestConfig;
+interface Axios {
+  (config: RequestConfig): Promise<AxiosResponse>;
+  request: (config: RequestConfig) => Promise<AxiosResponse>;
+  get: AliasFunc;
+  head: AliasFunc;
+  options: AliasFunc;
+  post: AliasFuncWithData;
+  put: AliasFuncWithData;
+  patch: AliasFuncWithData;
+  defaults: RequiredRequestConfig;
 }
+
+declare const axios: Axios;
 
 export default axios;
