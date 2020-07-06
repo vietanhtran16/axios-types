@@ -76,6 +76,7 @@ interface Axios {
   (config: RequestConfig): Promise<AxiosResponse>;
   request: (config: RequestConfig) => Promise<AxiosResponse>;
   get: AliasFunc;
+  delete: AliasFunc;
   head: AliasFunc;
   options: AliasFunc;
   post: AliasFuncWithData;
