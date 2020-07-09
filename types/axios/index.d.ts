@@ -85,6 +85,9 @@ type Axios = {
   post: AliasMethodWithData;
   put: AliasMethodWithData;
   patch: AliasMethodWithData;
+  all: (
+    requests: Array<(...args: any[]) => Promise<Response>>
+  ) => Promise<Response[]>;
   defaults: RequiredRequestConfig;
 };
 
