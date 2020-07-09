@@ -48,11 +48,11 @@ interface RequestConfig {
   decompress?: boolean;
 }
 
-type AliasMethodRequestConfig = Omit<RequestConfig, "url">;
+type AliasMethodRequestConfig = Omit<RequestConfig, "url" | "method">;
 
 type RequiredRequestConfig = Required<RequestConfig>;
 
-interface AxiosResponse {
+interface Response {
   data: Object;
   status: number;
   statusText: string;
@@ -61,29 +61,32 @@ interface AxiosResponse {
   request: any;
 }
 
-type AliasFunc = (
+type AliasMethod = (
   url: string,
   config?: AliasMethodRequestConfig
-) => Promise<AxiosResponse>;
+) => Promise<Response>;
 
-type AliasFuncWithData = (
+type AliasMethodWithData = (
   url: string,
   data?: Object | string,
   config?: AliasMethodRequestConfig
-) => Promise<AxiosResponse>;
+) => Promise<Response>;
 
-interface Axios {
-  (config: RequestConfig): Promise<AxiosResponse>;
-  request: (config: RequestConfig) => Promise<AxiosResponse>;
-  get: AliasFunc;
-  delete: AliasFunc;
-  head: AliasFunc;
-  options: AliasFunc;
-  post: AliasFuncWithData;
-  put: AliasFuncWithData;
-  patch: AliasFuncWithData;
+type AxiosInstance = Omit<Axios, "create">;
+
+type Axios = {
+  (config: RequestConfig): Promise<Response>;
+  create: (config: RequestConfig) => AxiosInstance;
+  request: (config: RequestConfig) => Promise<Response>;
+  get: AliasMethod;
+  delete: AliasMethod;
+  head: AliasMethod;
+  options: AliasMethod;
+  post: AliasMethodWithData;
+  put: AliasMethodWithData;
+  patch: AliasMethodWithData;
   defaults: RequiredRequestConfig;
-}
+};
 
 declare const axios: Axios;
 

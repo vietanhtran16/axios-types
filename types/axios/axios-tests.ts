@@ -11,6 +11,11 @@ const url = "/blah";
   await axios.request({ url, method: "head" });
 
   await axios.get(url, { params: { id: 1 } });
+  await axios.post(url, { id: 1 }, { responseType: "arraybuffer" });
+
+  const axiosInstance = axios.create({ url });
+  axiosInstance.defaults.data = { id: 10 };
+  axiosInstance.post(url);
 
   axios.defaults.baseURL = "https://api.example.com";
   axios.defaults.headers.common["Authorization"] = "token";
