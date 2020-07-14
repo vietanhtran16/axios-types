@@ -31,4 +31,6 @@ function getUserPermissions() {
   return axios.get("/user/12345/permission");
 }
 
-axios.all([getUserAcc(), getUserPermissions()]);
+axios.all([getUserAcc(), getUserPermissions()]).then(axios.spread(function (acct, perms) {
+  // Both requests are now complete
+}));

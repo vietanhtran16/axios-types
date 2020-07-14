@@ -88,6 +88,7 @@ type Axios = {
   all: (
     requests: Array<Promise<Response>>
   ) => Promise<Response[]>;
+  spread: (callback: (...args: any) => any) => (responses: Response[]) => any;
   defaults: RequiredRequestConfig;
 };
 
