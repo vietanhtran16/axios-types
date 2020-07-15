@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Response } from "axios";
 
 const url = "/blah";
 
@@ -10,7 +10,7 @@ const url = "/blah";
 
   await axios.request({ url, method: "head" });
 
-  await axios.get(url, { params: { id: 1 } });
+  const result = await axios.get(url, { params: { id: 1 } });
   await axios.post(url, { id: 1 }, { responseType: "arraybuffer" });
 })();
 
@@ -24,13 +24,14 @@ axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
 
 function getUserAcc() {
-  return axios.get(url);
+  return axios.get<{name: string}>(url);
 }
 
 function getUserPermissions() {
-  return axios.get("/user/12345/permission");
+  return axios.get<{id: number}>("/user/12345/permission");
 }
 
-axios.all([getUserAcc(), getUserPermissions()]).then(axios.spread(function (acct, perms) {
-  // Both requests are now complete
-}));
+axios.all([getUserAcc(), getUserPermissions()]).then((results) => {
+  results[0].data.name;
+  results[1].data.id;
+});

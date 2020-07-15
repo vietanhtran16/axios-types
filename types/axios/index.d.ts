@@ -52,8 +52,8 @@ type AliasMethodRequestConfig = Omit<RequestConfig, "url" | "method">;
 
 type RequiredRequestConfig = Required<RequestConfig>;
 
-interface Response {
-  data: Object;
+export interface Response<T> {
+  data: T;
   status: number;
   statusText: string;
   headers: Object;
@@ -61,23 +61,23 @@ interface Response {
   request: any;
 }
 
-type AliasMethod = (
+type AliasMethod = <T>(
   url: string,
   config?: AliasMethodRequestConfig
-) => Promise<Response>;
+) => Promise<Response<T>>;
 
-type AliasMethodWithData = (
+type AliasMethodWithData = <T>(
   url: string,
   data?: Object | string,
   config?: AliasMethodRequestConfig
-) => Promise<Response>;
+) => Promise<Response<T>>;
 
 type AxiosInstance = Omit<Axios, "create">;
 
 type Axios = {
-  (config: RequestConfig): Promise<Response>;
+  <T>(config: RequestConfig): Promise<Response<T>>;
   create: (config: RequestConfig) => AxiosInstance;
-  request: (config: RequestConfig) => Promise<Response>;
+  request: <T>(config: RequestConfig) => Promise<Response<T>>;
   get: AliasMethod;
   delete: AliasMethod;
   head: AliasMethod;
@@ -85,10 +85,8 @@ type Axios = {
   post: AliasMethodWithData;
   put: AliasMethodWithData;
   patch: AliasMethodWithData;
-  all: (
-    requests: Array<Promise<Response>>
-  ) => Promise<Response[]>;
-  spread: (callback: (...args: any) => any) => (responses: Response[]) => any;
+  all: typeof Promise.all;
+  // spread: (callback: (...args: any) => any) => (responses: Response[]) => any;
   defaults: RequiredRequestConfig;
 };
 
