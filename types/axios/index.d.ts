@@ -86,7 +86,7 @@ type Axios = {
   put: AliasMethodWithData;
   patch: AliasMethodWithData;
   all: typeof Promise.all;
-  // spread: (callback: (...args: any) => any) => (responses: Response[]) => any;
+  spread: (callback: (...args: any[]) => any) => (responses: any[]) => any;
   defaults: RequiredRequestConfig;
 };
 
