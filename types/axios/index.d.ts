@@ -16,7 +16,7 @@ interface BaseRequestConfig {
   data?: Object | string;
   timeout?: number;
   withCredentials?: boolean;
-  adapter?: (config: any) => Promise<{}>;
+  adapter?: (config: Object) => Promise<Response<any>>;
   auth?: {
     username: string;
     password: string;
