@@ -6,10 +6,8 @@ interface Object {
   [key: string]: any;
 }
 
-interface RequestConfig {
-  url: string;
+interface BaseRequestConfig {
   baseURL?: string;
-  method?: Method;
   transformRequest?: (data: Object, headers: Object) => Object;
   transformResponse?: Array<(data: Object) => Object>;
   headers?: Object;
@@ -48,7 +46,10 @@ interface RequestConfig {
   decompress?: boolean;
 }
 
-type AliasMethodRequestConfig = Omit<RequestConfig, "url" | "method">;
+type RequestConfig = BaseRequestConfig & {
+  url: string;
+  method?: Method;
+}
 
 type RequiredRequestConfig = Required<RequestConfig>;
 
@@ -63,13 +64,13 @@ export interface Response<T> {
 
 type AliasMethod = <T>(
   url: string,
-  config?: AliasMethodRequestConfig
+  config?: BaseRequestConfig
 ) => Promise<Response<T>>;
 
 type AliasMethodWithData = <T>(
   url: string,
   data?: Object | string,
-  config?: AliasMethodRequestConfig
+  config?: BaseRequestConfig
 ) => Promise<Response<T>>;
 
 type AxiosInstance = Omit<Axios, "create">;
