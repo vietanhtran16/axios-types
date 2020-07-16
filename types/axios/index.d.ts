@@ -73,11 +73,8 @@ type AliasMethodWithData = <T>(
   config?: BaseRequestConfig
 ) => Promise<Response<T>>;
 
-type AxiosInstance = Omit<Axios, "create">;
-
-type Axios = {
+type AxiosInstance = {
   <T>(config: RequestConfig): Promise<Response<T>>;
-  create: (config: RequestConfig) => AxiosInstance;
   request: <T>(config: RequestConfig) => Promise<Response<T>>;
   get: AliasMethod;
   delete: AliasMethod;
@@ -89,6 +86,10 @@ type Axios = {
   all: typeof Promise.all;
   spread: (callback: (...args: any[]) => any) => (responses: any[]) => any;
   defaults: RequiredRequestConfig;
+};
+
+type Axios = AxiosInstance & {
+  create: (config: RequestConfig) => AxiosInstance;
 };
 
 declare const axios: Axios;
