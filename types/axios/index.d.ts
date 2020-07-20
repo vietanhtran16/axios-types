@@ -51,8 +51,6 @@ type RequestConfig = BaseRequestConfig & {
   method?: Method;
 }
 
-type RequiredRequestConfig = Required<RequestConfig>;
-
 export interface Response<T> {
   data: T;
   status: number;
@@ -85,7 +83,7 @@ type AxiosInstance = {
   patch: AliasMethodWithData;
   all: typeof Promise.all;
   spread: (callback: (...args: any[]) => any) => (responses: any[]) => any;
-  defaults: RequiredRequestConfig;
+  defaults: Required<RequestConfig>;
 };
 
 type Axios = AxiosInstance & {
