@@ -46,3 +46,17 @@ function getUserPermissions() {
 axios.all([getUserAcc(), getUserPermissions()]).then(axios.spread(function (acct, perms) {
   
 }));
+
+axios.interceptors.request.use(function (config) {
+  config.timeout = 10000;
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use<Data>(function (response) {
+  response.data.id = 10000;
+  return response;
+}, function (error) {
+  return Promise.reject(error);
+});
