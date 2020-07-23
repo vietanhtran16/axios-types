@@ -49,7 +49,7 @@ interface BaseRequestConfig {
 type RequestConfig = BaseRequestConfig & {
   url: string;
   method?: Method;
-}
+};
 
 export interface Response<T> {
   data: T;
@@ -81,21 +81,27 @@ type AxiosInstance = {
   post: AliasMethodWithData;
   put: AliasMethodWithData;
   patch: AliasMethodWithData;
-  all: typeof Promise.all;
-  spread: (callback: (...args: any[]) => any) => (responses: any[]) => any;
   defaults: Required<RequestConfig>;
   interceptors: {
     request: {
-      use: (interceptor: (config: RequestConfig) => RequestConfig, errorHandler: (error: any) => Promise<any>) => void
-    },
+      use: (
+        interceptor: (config: RequestConfig) => RequestConfig,
+        errorHandler: (error: any) => Promise<any>
+      ) => void;
+    };
     response: {
-      use: <T>(interceptor: (config: Response<T>) => Response<T>, errorHandler: (error: any) => Promise<any>) => void
-    }
-  }
+      use: <T>(
+        interceptor: (config: Response<T>) => Response<T>,
+        errorHandler: (error: any) => Promise<any>
+      ) => void;
+    };
+  };
 };
 
 type Axios = AxiosInstance & {
   create: (config: RequestConfig) => AxiosInstance;
+  all: typeof Promise.all;
+  spread: (callback: (...args: any[]) => any) => (responses: any[]) => any;
 };
 
 declare const axios: Axios;
